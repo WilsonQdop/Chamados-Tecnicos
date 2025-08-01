@@ -4,6 +4,8 @@ import com.WilsonQdop.Chamadas.dtos.calleddto.CalledResponseDTO;
 import com.WilsonQdop.Chamadas.dtos.technicaldto.TechnicalRequestDTO;
 import com.WilsonQdop.Chamadas.dtos.technicaldto.TechnicalResponseDTO;
 import com.WilsonQdop.Chamadas.enums.StatusEnum;
+import com.WilsonQdop.Chamadas.exceptions.CalledAssignmentException;
+import com.WilsonQdop.Chamadas.exceptions.TechnicalNotFoundException;
 import com.WilsonQdop.Chamadas.interfaces.TechnicalInterface;
 import com.WilsonQdop.Chamadas.mappers.CalledMapper;
 import com.WilsonQdop.Chamadas.mappers.TechnicalMapper;
@@ -44,13 +46,12 @@ public class TechnicalService implements TechnicalInterface {
     @Override
     public Technical find(UUID id) {
         return this.technicalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
+                .orElseThrow(TechnicalNotFoundException::new);
     }
 
     @Override
     public TechnicalResponseDTO update(TechnicalRequestDTO dto, UUID id) {
-        Technical technical = this.technicalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
+        Technical technical = this.find(id);
 
         this.mapper.updateToEntityFromDto(dto, technical);
         Technical updated = this.technicalRepository.save(technical);
@@ -59,8 +60,7 @@ public class TechnicalService implements TechnicalInterface {
 
     @Override
     public void delete(UUID id) {
-        Technical technical = this.technicalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
+        Technical technical = this.find(id);
         this.technicalRepository.delete(technical);
     }
 
@@ -70,7 +70,7 @@ public class TechnicalService implements TechnicalInterface {
         Technical technical = this.find(technicalId);
 
         if (!called.isPaymentConfirmed() || !called.getStatus().equals(StatusEnum.OPEN) || called.getTechnical() != null) {
-            throw new RuntimeException("Você não pode pegar este chamado!");
+            throw new CalledAssignmentException();
         }
 
         called.setTechnical(technical);

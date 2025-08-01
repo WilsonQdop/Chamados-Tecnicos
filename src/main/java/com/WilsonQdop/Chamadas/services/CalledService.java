@@ -3,6 +3,8 @@ package com.WilsonQdop.Chamadas.services;
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledRequestDTO;
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledResponseDTO;
 import com.WilsonQdop.Chamadas.enums.StatusEnum;
+import com.WilsonQdop.Chamadas.exceptions.CalledIsPaidException;
+import com.WilsonQdop.Chamadas.exceptions.CalledNotFoundException;
 import com.WilsonQdop.Chamadas.interfaces.CalledInterface;
 import com.WilsonQdop.Chamadas.mappers.CalledMapper;
 import com.WilsonQdop.Chamadas.models.Called;
@@ -26,7 +28,6 @@ public class CalledService implements CalledInterface {
         this.customerService = customerService;
         this.mapper = mapper;
     }
-
 
     @Override
     public CalledResponseDTO create(CalledRequestDTO dto, UUID customerId) {
@@ -58,11 +59,10 @@ public class CalledService implements CalledInterface {
 
     @Override
     public void paymentConfirmed(Long calledId) {
-        Called called = this.calledRepository.findById(calledId)
-                .orElseThrow(() -> new RuntimeException("Chamada não encontrada"));
+        Called called = this.findById(calledId);
 
         if (called.isPaymentConfirmed()) {
-            throw new RuntimeException("Chamado Já está pago");
+            throw new CalledIsPaidException();
         }
         called.setPaymentConfirmed(true);
         called.setStatus(StatusEnum.OPEN);
@@ -74,6 +74,6 @@ public class CalledService implements CalledInterface {
     @Override
     public Called findById(Long id) {
         return this.calledRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+                .orElseThrow(CalledNotFoundException::new);
     }
 }

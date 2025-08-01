@@ -2,6 +2,7 @@ package com.WilsonQdop.Chamadas.services;
 
 import com.WilsonQdop.Chamadas.dtos.customedto.CustomerRequestDTO;
 import com.WilsonQdop.Chamadas.dtos.customedto.CustomerResponseDTO;
+import com.WilsonQdop.Chamadas.exceptions.CustomerNotFoundException;
 import com.WilsonQdop.Chamadas.interfaces.CustomerInterface;
 import com.WilsonQdop.Chamadas.mappers.CustomerMapper;
 import com.WilsonQdop.Chamadas.models.Customer;
@@ -33,7 +34,7 @@ public class CustomerService implements CustomerInterface {
     @Override
     public Customer findById(UUID id) {
        return this.customerRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Usúario não encontrado"));
+                orElseThrow(CustomerNotFoundException::new);
 
     }
 

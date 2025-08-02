@@ -36,4 +36,14 @@ public class HandlerExceptionController {
         PatternMessageException message = new PatternMessageException(ex.getMessage(), HttpStatus.NOT_FOUND);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<PatternMessageException> Business (BusinessException ex) {
+        PatternMessageException message = new PatternMessageException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+    @ExceptionHandler(TechnicalIsNotOwnerException.class)
+    public ResponseEntity<PatternMessageException> technicalIsNotOwner (TechnicalIsNotOwnerException ex) {
+        PatternMessageException message = new PatternMessageException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
 }

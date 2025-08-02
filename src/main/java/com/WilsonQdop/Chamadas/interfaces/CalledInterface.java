@@ -2,6 +2,9 @@ package com.WilsonQdop.Chamadas.interfaces;
 
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledRequestDTO;
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledResponseDTO;
+import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedCalledDTO;
+import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedRequestDTO;
+import com.WilsonQdop.Chamadas.enums.StatusEnum;
 import com.WilsonQdop.Chamadas.models.Called;
 
 
@@ -13,5 +16,6 @@ public interface CalledInterface {
     List<CalledResponseDTO> findByStatusOpen();
     void paymentConfirmed(Long calledId);
     Called findById (Long id);
+    FinalizedCalledDTO finalizedCalled(Long calledId, UUID technicalId, FinalizedRequestDTO dto);
 
 }

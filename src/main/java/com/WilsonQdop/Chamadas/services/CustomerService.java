@@ -35,7 +35,6 @@ public class CustomerService implements CustomerInterface {
     public Customer findById(UUID id) {
        return this.customerRepository.findById(id).
                 orElseThrow(CustomerNotFoundException::new);
-
     }
 
     @Override
@@ -53,6 +52,5 @@ public class CustomerService implements CustomerInterface {
         Customer customer = this.findById(id);
 
         this.customerRepository.delete(customer);
-
     }
 }

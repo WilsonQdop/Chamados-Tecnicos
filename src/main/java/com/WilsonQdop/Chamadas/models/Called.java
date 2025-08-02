@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Called {
@@ -28,10 +31,14 @@ public class Called {
     @ManyToOne
     private Technical technical;
 
+    @OneToMany(mappedBy = "called", orphanRemoval = true, cascade = CascadeType.ALL)
+    List<CalledHistory> histories;
+
     public Called () {
         createdAt = LocalDateTime.now();
         this.setPaymentConfirmed(false);
         status = StatusEnum.WAIT_PAYMENT;
+        histories = new ArrayList<>();
     }
 
     public Long getId() {
@@ -113,4 +120,7 @@ public class Called {
     public void setTechnical(Technical technical) {
         this.technical = technical;
     }
+
+
+
 }

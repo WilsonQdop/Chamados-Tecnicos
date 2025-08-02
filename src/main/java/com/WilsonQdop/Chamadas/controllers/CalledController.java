@@ -2,6 +2,9 @@ package com.WilsonQdop.Chamadas.controllers;
 
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledRequestDTO;
 import com.WilsonQdop.Chamadas.dtos.calleddto.CalledResponseDTO;
+import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedCalledDTO;
+import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedRequestDTO;
+import com.WilsonQdop.Chamadas.enums.StatusEnum;
 import com.WilsonQdop.Chamadas.services.CalledService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +38,13 @@ public class CalledController {
         this.calledService.paymentConfirmed(calledId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("{technicalId}/finalized/{calledId}")
+    public ResponseEntity<FinalizedCalledDTO> finalizedCalled (@PathVariable Long calledId, @PathVariable UUID technicalId,
+                                                               @RequestBody FinalizedRequestDTO dto ) {
+
+        FinalizedCalledDTO response = this.calledService.finalizedCalled(calledId, technicalId, dto);
+        return ResponseEntity.ok(response);
+    }
+
 }

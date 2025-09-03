@@ -6,8 +6,10 @@ import com.WilsonQdop.Chamadas.models.Customer;
 import com.WilsonQdop.Chamadas.services.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,7 +21,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping
+    @PostMapping("register")
     public ResponseEntity<CustomerResponseDTO> save (@RequestBody CustomerRequestDTO dto) {
         CustomerResponseDTO customer = this.customerService.save(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(customer);
@@ -40,5 +42,12 @@ public class CustomerController {
     public ResponseEntity<Void> delete   (@PathVariable UUID id) {
         this.customerService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("findAll")
+    @PreAuthorize("hasAuthority('SCOPE_ADM')")
+    public ResponseEntity<List<CustomerResponseDTO>> findAll   () {
+       List<CustomerResponseDTO> customers = this.customerService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 }

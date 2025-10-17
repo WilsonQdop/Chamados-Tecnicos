@@ -40,6 +40,24 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST,"/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customer/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/technical/register").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/customer/findAll").authenticated()
+
+                        .requestMatchers(HttpMethod.PUT, "/technical/assign").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/called/create").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/called/payment").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/called/status/open").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/called/finalized").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/history/registred").authenticated()
+
 
                         .anyRequest().authenticated())
 

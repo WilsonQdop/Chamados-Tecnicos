@@ -1,7 +1,7 @@
 package com.WilsonQdop.Chamadas.mappers;
 
-import com.WilsonQdop.Chamadas.dtos.technicaldto.TechnicalRequestDTO;
-import com.WilsonQdop.Chamadas.dtos.technicaldto.TechnicalResponseDTO;
+import com.WilsonQdop.Chamadas.models.dtos.technicaldto.TechnicalRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.technicaldto.TechnicalResponseDTO;
 import com.WilsonQdop.Chamadas.models.Technical;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

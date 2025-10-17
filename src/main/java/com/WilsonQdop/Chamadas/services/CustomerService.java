@@ -1,11 +1,10 @@
 package com.WilsonQdop.Chamadas.services;
 
-import com.WilsonQdop.Chamadas.dtos.customedto.CustomerRequestDTO;
-import com.WilsonQdop.Chamadas.dtos.customedto.CustomerResponseDTO;
-import com.WilsonQdop.Chamadas.dtos.roledto.RoleDTO;
+import com.WilsonQdop.Chamadas.models.dtos.customedto.CustomerRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.customedto.CustomerResponseDTO;
 import com.WilsonQdop.Chamadas.enums.RolesType;
 import com.WilsonQdop.Chamadas.exceptions.CustomerNotFoundException;
-import com.WilsonQdop.Chamadas.interfaces.CustomerInterface;
+import com.WilsonQdop.Chamadas.services.impl.CustomerInterface;
 import com.WilsonQdop.Chamadas.mappers.CustomerMapper;
 import com.WilsonQdop.Chamadas.models.Customer;
 import com.WilsonQdop.Chamadas.models.Role;
@@ -21,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements CustomerInterface {

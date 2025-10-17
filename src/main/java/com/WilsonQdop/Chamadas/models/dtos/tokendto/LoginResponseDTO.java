@@ -1,4 +1,4 @@
-package com.WilsonQdop.Chamadas.dtos.tokendto;
+package com.WilsonQdop.Chamadas.models.dtos.tokendto;
 
 public record LoginResponseDTO(String accessToken, int expiresIn) {
 }

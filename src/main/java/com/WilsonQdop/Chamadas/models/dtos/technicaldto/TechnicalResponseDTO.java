@@ -1,4 +1,4 @@
-package com.WilsonQdop.Chamadas.dtos.technicaldto;
+package com.WilsonQdop.Chamadas.models.dtos.technicaldto;
 
 import java.util.UUID;
 

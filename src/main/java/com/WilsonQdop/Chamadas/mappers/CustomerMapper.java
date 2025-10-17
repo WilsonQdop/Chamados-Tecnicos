@@ -1,9 +1,9 @@
 package com.WilsonQdop.Chamadas.mappers;
 
 
-import com.WilsonQdop.Chamadas.dtos.customedto.CustomerRequestDTO;
-import com.WilsonQdop.Chamadas.dtos.customedto.CustomerResponseDTO;
-import com.WilsonQdop.Chamadas.dtos.roledto.RoleDTO;
+import com.WilsonQdop.Chamadas.models.dtos.customedto.CustomerRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.customedto.CustomerResponseDTO;
+import com.WilsonQdop.Chamadas.models.dtos.roledto.RoleDTO;
 import com.WilsonQdop.Chamadas.models.Customer;
 import com.WilsonQdop.Chamadas.models.Role;
 import org.mapstruct.Mapper;

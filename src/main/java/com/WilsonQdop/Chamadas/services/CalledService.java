@@ -1,19 +1,19 @@
 package com.WilsonQdop.Chamadas.services;
 
-import com.WilsonQdop.Chamadas.dtos.calleddto.CalledRequestDTO;
-import com.WilsonQdop.Chamadas.dtos.calleddto.CalledResponseDTO;
-import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedCalledDTO;
-import com.WilsonQdop.Chamadas.dtos.calleddto.FinalizedRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.calleddto.CalledRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.calleddto.CalledResponseDTO;
+import com.WilsonQdop.Chamadas.models.dtos.calleddto.FinalizedCalledDTO;
+import com.WilsonQdop.Chamadas.models.dtos.calleddto.FinalizedRequestDTO;
 import com.WilsonQdop.Chamadas.enums.StatusEnum;
 import com.WilsonQdop.Chamadas.exceptions.BusinessException;
 import com.WilsonQdop.Chamadas.exceptions.CalledIsPaidException;
 import com.WilsonQdop.Chamadas.exceptions.CalledNotFoundException;
-import com.WilsonQdop.Chamadas.exceptions.TechnicalIsNotOwnerException;
-import com.WilsonQdop.Chamadas.interfaces.CalledInterface;
+import com.WilsonQdop.Chamadas.services.impl.CalledInterface;
 import com.WilsonQdop.Chamadas.mappers.CalledMapper;
 import com.WilsonQdop.Chamadas.models.Called;
 import com.WilsonQdop.Chamadas.models.Customer;
 import com.WilsonQdop.Chamadas.repositories.CalledRepository;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,11 +35,10 @@ public class CalledService implements CalledInterface {
     }
 
     @Override
-    public CalledResponseDTO create(CalledRequestDTO dto, UUID customerId) {
-        Customer customer = this.customerService.findById(customerId);
+    public CalledResponseDTO create(CalledRequestDTO dto, JwtAuthenticationToken auth) {
+        Customer customer = this.customerService.findById(UUID.fromString(auth.getName()));
 
         Called called = mapper.toDto(dto);
-
         switch (dto.category()) {
             case HIGH -> called.setValue(new BigDecimal(200));
             case MEDIA -> called.setValue(new BigDecimal(150));
@@ -62,8 +61,14 @@ public class CalledService implements CalledInterface {
     }
 
     @Override
-    public void paymentConfirmed(Long calledId) {
+    public void paymentConfirmed(Long calledId, JwtAuthenticationToken auth) {
         Called called = this.findById(calledId);
+
+        UUID customerId = UUID.fromString(auth.getName());
+
+        if (!called.getCustomer().getId().equals(customerId)) {
+            throw new RuntimeException("Pagamento falho! Este chamado não é seu!");
+        }
 
         if (called.isPaymentConfirmed()) {
             throw new CalledIsPaidException();
@@ -81,9 +86,14 @@ public class CalledService implements CalledInterface {
     }
 
     @Override
-    public FinalizedCalledDTO finalizedCalled(Long calledId, UUID technicalId, FinalizedRequestDTO dto) {
+    public FinalizedCalledDTO finalizedCalled(Long calledId, JwtAuthenticationToken auth, FinalizedRequestDTO dto) {
         Called called = this.findById(calledId);
-        this.validateTechnicalOwnership(called, technicalId);
+
+        UUID technicalId = UUID.fromString(auth.getName());
+
+        if(called.getTechnical().getId().equals(technicalId)) {
+            throw new RuntimeException("Este chamado não pertence a você!");
+        }
 
         this.isClosed(called);
 
@@ -93,11 +103,11 @@ public class CalledService implements CalledInterface {
         return this.mapper.mapToFinalizedResponse(this.calledRepository.save(called));
     }
 
-    public void validateTechnicalOwnership(Called called, UUID technicalId) {
-        if (called.getTechnical() != null && !technicalId.equals(called.getTechnical().getId())) {
-            throw new TechnicalIsNotOwnerException();
-        }
-    }
+//    public void validateTechnicalOwnership(Called called, UUID technicalId) {
+//        if (called.getTechnical() != null && !technicalId.equals(called.getTechnical().getId())) {
+//            throw new TechnicalIsNotOwnerException();
+//        }
+//    }
     public void isClosed(Called called) {
        if (called.getStatus().equals(StatusEnum.COMPLETED ) || called.getStatus().equals(StatusEnum.CANCELED)) {
            throw new BusinessException();

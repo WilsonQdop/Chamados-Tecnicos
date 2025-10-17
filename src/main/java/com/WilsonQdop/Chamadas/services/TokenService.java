@@ -1,7 +1,7 @@
 package com.WilsonQdop.Chamadas.services;
 
-import com.WilsonQdop.Chamadas.dtos.tokendto.LoginRequestDTO;
-import com.WilsonQdop.Chamadas.dtos.tokendto.LoginResponseDTO;
+import com.WilsonQdop.Chamadas.models.dtos.tokendto.LoginRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.tokendto.LoginResponseDTO;
 import com.WilsonQdop.Chamadas.models.Role;
 import com.WilsonQdop.Chamadas.repositories.PersonRepository;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +20,8 @@ public class TokenService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final PersonRepository personRepository;
 
-    public TokenService(JwtEncoder jwtEncoder, BCryptPasswordEncoder passwordEncoder, PersonRepository personRepository) {
+    public TokenService(JwtEncoder jwtEncoder, BCryptPasswordEncoder passwordEncoder,
+                        PersonRepository personRepository) {
         this.jwtEncoder = jwtEncoder;
         this.passwordEncoder = passwordEncoder;
         this.personRepository = personRepository;

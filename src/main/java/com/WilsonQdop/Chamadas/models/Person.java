@@ -1,6 +1,6 @@
 package com.WilsonQdop.Chamadas.models;
 
-import com.WilsonQdop.Chamadas.dtos.tokendto.LoginRequestDTO;
+import com.WilsonQdop.Chamadas.models.dtos.tokendto.LoginRequestDTO;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

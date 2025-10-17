@@ -1,4 +1,4 @@
-package com.WilsonQdop.Chamadas.dtos.calledhistorydto;
+package com.WilsonQdop.Chamadas.models.dtos.calledhistorydto;
 
 import java.time.LocalDateTime;
 

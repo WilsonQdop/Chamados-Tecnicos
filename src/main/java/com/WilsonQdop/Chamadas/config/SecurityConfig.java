@@ -38,7 +38,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers(HttpMethod.POST,"/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/token/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customer/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/technical/register").permitAll()
                         .requestMatchers(

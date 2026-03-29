@@ -51,6 +51,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/customer/findAll").authenticated()
 
                         .requestMatchers(HttpMethod.PUT, "/technical/assign").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/technical/update").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/technical/find").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/technical/delete").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/called/create").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/called/payment").authenticated()
@@ -58,6 +61,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/called/finalized").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/history/registred").authenticated()
+
+
+                        .requestMatchers("/backup/**").hasAuthority("SCOPE_USER")
 
 
                         .anyRequest().authenticated())

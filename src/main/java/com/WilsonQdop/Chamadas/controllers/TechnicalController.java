@@ -69,6 +69,7 @@ public class TechnicalController {
             }
     )
     @PutMapping("update/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_TECH')")
     public ResponseEntity<TechnicalResponseDTO> update (@RequestBody TechnicalRequestDTO dto, @PathVariable UUID id) {
         TechnicalResponseDTO technical = this.technicalService.update(dto, id);
         return ResponseEntity.status(HttpStatus.OK).body(technical);
@@ -94,6 +95,7 @@ public class TechnicalController {
             }
     )
     @GetMapping("find/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_TECH')")
     public ResponseEntity<Technical> find (@PathVariable UUID id) {
         Technical technical = this.technicalService.find(id);
         return ResponseEntity.status(HttpStatus.OK).body(technical);
@@ -119,6 +121,7 @@ public class TechnicalController {
     )
 
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_TECH')")
     public ResponseEntity<TechnicalResponseDTO> delete (@PathVariable UUID id) {
          this.technicalService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();

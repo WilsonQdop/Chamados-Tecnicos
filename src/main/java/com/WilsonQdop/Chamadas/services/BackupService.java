@@ -1,0 +1,77 @@
+package com.WilsonQdop.Chamadas.services;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Service
+public class BackupService {
+
+    @Value("${spring.datasource.username}")
+    private String dbUser;
+
+    @Value("${spring.datasource.password}")
+    private String dbPass;
+
+    @Value("${database.name}")
+    private String dbName;
+
+    @Value("${backup.storage.location:./backups/}")
+    private String storagePath;
+
+    @Scheduled(cron = "0 0 * * * *")
+    public String executeBackup() throws IOException, InterruptedException {
+        File directory = new File(storagePath);
+        if (!directory.exists()) directory.mkdirs();
+
+        String fileName = "backup-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm")) + ".sql";
+        String fullPath = new File(storagePath + fileName).getAbsolutePath();
+
+        // Agora chamamos apenas "mysqldump" diretamente
+        ProcessBuilder pb = new ProcessBuilder(
+                "mysqldump",
+                "-u" + dbUser,
+                "-p" + dbPass,
+                dbName,
+                "--result-file=" + fullPath
+        );
+
+        Process process = pb.start();
+        int exitCode = process.waitFor();
+
+        if (exitCode == 0) {
+            return "Backup realizado: " + fileName;
+        } else {
+            // Captura o erro real do MySQL se algo der errado
+            String errorStream = new String(process.getErrorStream().readAllBytes());
+            throw new RuntimeException("Erro no mysqldump: " + errorStream);
+        }
+    }
+
+    public void restoreBackup(String fileName) throws IOException, InterruptedException {
+        String fullPath = new File(storagePath + fileName).getAbsolutePath();
+
+        // Agora chamamos apenas "mysql" diretamente
+        ProcessBuilder pb = new ProcessBuilder(
+                "mysql",
+                "-u" + dbUser,
+                "-p" + dbPass,
+                dbName
+        );
+
+        pb.redirectInput(ProcessBuilder.Redirect.from(new File(fullPath)));
+
+        Process process = pb.start();
+        int exitCode = process.waitFor();
+
+        if (exitCode != 0) {
+            String errorStream = new String(process.getErrorStream().readAllBytes());
+            throw new RuntimeException("Erro no restore: " + errorStream);
+        }
+    }
+}

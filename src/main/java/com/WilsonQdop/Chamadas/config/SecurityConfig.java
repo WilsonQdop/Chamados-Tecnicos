@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -35,7 +36,7 @@ public class SecurityConfig {
     private RSAPrivateKey privateKey;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
 
         http.authorizeHttpRequests(authorize -> authorize
 
@@ -63,12 +64,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/history/registred").authenticated()
 
 
-                        .requestMatchers("/backup/**").hasAuthority("SCOPE_USER")
+                        .requestMatchers("/backup/**").permitAll()
 
 
                         .anyRequest().authenticated())
 
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers ->
                         headers.httpStrictTransportSecurity(

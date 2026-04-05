@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-create-called',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './create-called.component.html'
+  templateUrl: './create-called.component.html',
+  styleUrl: './create-called.component.scss'
 })
 export class CreateCalledComponent {
   calledForm: FormGroup;

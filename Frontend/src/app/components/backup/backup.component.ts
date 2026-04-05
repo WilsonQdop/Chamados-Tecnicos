@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true, 
   imports: [CommonModule, FormsModule],
   templateUrl: './backup.component.html',
+  styleUrl: './backup.component.scss'
 })
 export class BackupComponent implements OnInit { // Implementamos a interface
   mensagem: string = '';

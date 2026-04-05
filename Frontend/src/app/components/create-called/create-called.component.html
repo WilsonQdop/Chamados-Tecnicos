@@ -1,28 +1,27 @@
-<div class="container" style="padding: 20px; max-width: 600px;">
+<div class="container">
   <h2>Abrir Novo Chamado</h2>
   
   <form [formGroup]="calledForm" (ngSubmit)="onSubmit()">
-    <div style="margin-bottom: 15px;">
+    <div class="problema" style="margin-bottom: 15px;">
       <label>Título do Problema</label>
-      <input type="text" formControlName="title" class="form-control" style="width: 100%; padding: 8px;">
+      <input class="input-select" type="text" formControlName="title">
     </div>
 
     <div style="margin-bottom: 15px;">
       <label>Descrição Detalhada</label>
-      <textarea formControlName="description" rows="4" style="width: 100%; padding: 8px;"></textarea>
+      <textarea class="input-select" formControlName="description" rows="4"></textarea>
     </div>
 
     <div style="margin-bottom: 15px;">
       <label>Prioridade / Categoria</label>
-      <select formControlName="category" style="width: 100%; padding: 8px;">
+      <select class="input-select" formControlName="category">
         <option value="LOW">Baixa (R$ 100,00)</option>
         <option value="MEDIA">Média (R$ 150,00)</option>
         <option value="HIGH">Alta (R$ 200,00)</option>
       </select>
     </div>
 
-    <button type="submit" [disabled]="calledForm.invalid || loading" 
-            style="background: #007bff; color: white; padding: 10px 20px; border: none; cursor: pointer;">
+    <button class="submit-button" type="submit" [disabled]="calledForm.invalid || loading">
       {{ loading ? 'Enviando...' : 'Registrar Chamado' }}
     </button>
   </form>

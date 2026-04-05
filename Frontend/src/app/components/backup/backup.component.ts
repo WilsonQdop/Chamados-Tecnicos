@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core'; // Importamos OnInit
 import { BackupService } from '../../services/backup-service.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NavBarComponent } from '../nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-backup',
   standalone: true, 
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NavBarComponent],
   templateUrl: './backup.component.html',
   styleUrl: './backup.component.scss'
 })

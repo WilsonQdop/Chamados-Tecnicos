@@ -1,0 +1,44 @@
+
+<!-- Restore -->
+<div class="backup-container" style="padding: 20px; max-width: 500px;">
+  <h2>Gerenciamento de Backup</h2>
+
+  <div style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+    <h4>Novo Backup</h4>
+    <p>Gere um arquivo .sql com o estado atual do banco.</p>
+    <button 
+      (click)="onBackup()" 
+      [disabled]="carregando"
+      style="background-color: #28a745; color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer;">
+      {{ carregando ? 'Processando...' : 'Gerar Backup Agora' }}
+    </button>
+  </div>
+
+
+  <!-- Restore -->
+  <div style="padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+    <h4>Restaurar Sistema</h4>
+    <label for="backupSelect">Escolha um ponto de restauração:</label>
+    
+    <select 
+      id="backupSelect"
+      [(ngModel)]="arquivoSelecionado" 
+      style="width: 100%; padding: 10px; margin-top: 10px; margin-bottom: 15px;">
+      <option value="">-- Selecione um arquivo --</option>
+      <option *ngFor="let arquivo of listaBackups" [value]="arquivo">
+        {{ arquivo }}
+        </option>
+    </select>
+
+    <button 
+      (click)="onRestore()" 
+      [disabled]="carregando || !arquivoSelecionado"
+      style="background-color: #dc3545; color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; width: 100%;">
+      {{ carregando ? 'Restaurando...' : 'Executar Restore' }}
+    </button>
+  </div>
+
+  <p *ngIf="mensagem" style="margin-top: 20px; color: #555; font-style: italic;">
+    {{ mensagem }}
+  </p>
+</div>

@@ -1,0 +1,11 @@
+<main>
+    <section>
+        <h2>{{title}}</h2>
+        <ng-content></ng-content>
+        <button (click)="submit()">{{prymaryButtonText}}</button>
+        <div>
+            <span>Or</span>
+        </div>
+        <button (click)="navigate()">{{secondaryButtonText}}</button>
+    </section>
+</main>
